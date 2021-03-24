@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import MultiStepForm from './MultiStepForm';
-import NavigationButtons from './NavigationButtons';
+import MultiStepForm from './components/MultiStepForm';
+import NavigationButtons from './components/NavigationButtons';
 const totalScreens = 3;
 
 class App extends React.Component {
