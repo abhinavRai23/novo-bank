@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import MultiStepForm from './MultiStepForm';
+import NavigationButtons from './NavigationButtons';
+const totalScreens = 3;
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+	state = {
+		currentScreen: 1,
+		data: {}
+	};
+
+	handler = (type) => {
+		const { currentScreen } = this.state;
+		if (type === 'next') {
+			this.setState({ currentScreen: currentScreen + 1 });
+		} else if (type === 'back') {
+			this.setState({ currentScreen: currentScreen - 1 });
+		} else {
+			this.setState({ currentScreen: 1 });
+		}
+	};
+
+	render() {
+		const { currentScreen, data } = this.state;
+		return (
+			<div className="App">
+				<MultiStepForm currentScreen={currentScreen} data={data} />
+				<NavigationButtons
+					currentScreen={currentScreen}
+					handler={this.handler}
+					totalScreens={totalScreens}
+				/>
+			</div>
+		);
+	}
 }
 
 export default App;
