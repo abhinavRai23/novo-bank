@@ -12,8 +12,7 @@ const getName = (title) => {
 
 class SectionView extends React.Component {
 	state = {
-		data: {},
-		isValidate: false
+		data: {}
 	};
 
 	componentDidMount() {
@@ -25,11 +24,15 @@ class SectionView extends React.Component {
 
 	validateSection = () => {
 		const { data } = this.state;
-		const { Fields } = this.props;
+		const {
+			Fields: { fields },
+			prefix,
+			handler
+		} = this.props;
 		const map = {};
-		Fields.map((field) => {
+		fields.forEach((field) => {
 			const name = getName(field.title);
-			const value = data[name];
+			const value = data[name] || '';
 			if (field.type !== 'radio') map[name] = false;
 			if (
 				field.type === 'text' &&
@@ -37,22 +40,26 @@ class SectionView extends React.Component {
 				value.length >= field.minLen
 			) {
 				if (field.validationType && regex.varchar.test(value)) {
-					map[field] = true;
+					map[name] = true;
 				}
 				if (!field.validationType && regex.text.test(value)) {
-					map[field] = true;
+					map[name] = true;
 				}
 			} else if (
 				field.type === 'number' &&
 				value <= field.maxValue &&
 				value >= field.minValue
 			) {
-				map[field] = true;
+				map[name] = true;
 			}
 		});
-		this.setState({
-			isValidate: !Object.keys(map).filter((bool) => bool === false).length
-		});
+		let isValid = !Object.keys(map).filter((field) => map[field] === false)
+			.length;
+		if (isValid) {
+			handler(prefix, this.state.data);
+		}
+		console.log(Object.keys(map).filter((field) => map[field] === false));
+		return isValid;
 	};
 
 	updateValue = ({ target: { name, value } = {} }, field) => {

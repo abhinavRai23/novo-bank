@@ -9,16 +9,14 @@ class App extends React.Component {
 		currentScreen: 1,
 		data: {}
 	};
+	ref = React.createRef();
 
-	handler = (type, name, value) => {
+	handler = (type, sectionData) => {
 		const { data } = this.state;
 		this.setState({
 			data: {
 				...data,
-				[type]: {
-					...data?.[type],
-					[name]: value
-				}
+				[type]: JSON.parse(JSON.stringify(sectionData || {}))
 			}
 		});
 	};
@@ -26,7 +24,9 @@ class App extends React.Component {
 	navHandler = (type) => {
 		const { currentScreen } = this.state;
 		if (type === 'next') {
-			this.setState({ currentScreen: currentScreen + 1 });
+			if (this.ref.current.validateSection()) {
+				this.setState({ currentScreen: currentScreen + 1 });
+			}
 		} else if (type === 'back') {
 			this.setState({ currentScreen: currentScreen - 1 });
 		} else {
@@ -42,6 +42,7 @@ class App extends React.Component {
 					currentScreen={currentScreen}
 					data={data}
 					handler={this.handler}
+					ref={this.ref}
 				/>
 				<div className="button-group">
 					<NavigationButtons
