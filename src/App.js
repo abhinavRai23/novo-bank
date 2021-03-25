@@ -10,7 +10,20 @@ class App extends React.Component {
 		data: {}
 	};
 
-	handler = (type) => {
+	handler = (type, name, value) => {
+		const { data } = this.state;
+		this.setState({
+			data: {
+				...data,
+				[type]: {
+					...data?.[type],
+					[name]: value
+				}
+			}
+		});
+	};
+
+	navHandler = (type) => {
 		const { currentScreen } = this.state;
 		if (type === 'next') {
 			this.setState({ currentScreen: currentScreen + 1 });
@@ -25,12 +38,18 @@ class App extends React.Component {
 		const { currentScreen, data } = this.state;
 		return (
 			<div className="App">
-				<MultiStepForm currentScreen={currentScreen} data={data} />
-				<NavigationButtons
+				<MultiStepForm
 					currentScreen={currentScreen}
+					data={data}
 					handler={this.handler}
-					totalScreens={totalScreens}
 				/>
+				<div className="button-group">
+					<NavigationButtons
+						currentScreen={currentScreen}
+						handler={this.navHandler}
+						totalScreens={totalScreens}
+					/>
+				</div>
 			</div>
 		);
 	}

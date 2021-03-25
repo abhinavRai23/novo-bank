@@ -1,0 +1,25 @@
+.section .title {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.section .form {
+    width: 600px;
+    margin: 20px auto;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.form-group label {
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 450px
+}

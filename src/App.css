@@ -1,0 +1,19 @@
+.button-group {
+    text-align: center;
+}
+
+.button-group button {
+    padding: 4px;
+    width: 100px;
+    border-radius: 16px;
+}
+
+.button-group button:focus,
+button:active {
+    /* border-color: transparent; */
+    outline: none;
+}
+
+.button-group button+button {
+    margin-left: 1rem;
+}

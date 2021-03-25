@@ -36,8 +36,8 @@ const CompleteFormFields = {
 			{
 				title: 'Zip Code',
 				type: 'number',
-				maxValue: 11_111,
-				minLen: 99_999
+				maxValue: 99_999,
+				minValue: 11_111
 			}
 		]
 	},
@@ -86,8 +86,8 @@ const CompleteFormFields = {
 			{
 				title: 'Zip Code',
 				type: 'number',
-				maxValue: 11_111,
-				minLen: 99_999
+				maxValue: 99_999,
+				minValue: 11_111
 			}
 		]
 	},
@@ -138,8 +138,8 @@ const CompleteFormFields = {
 			{
 				title: 'Zip Code',
 				type: 'number',
-				maxValue: 11_111,
-				minLen: 99_999
+				maxValue: 99_999,
+				minValue: 11_111
 			}
 		]
 	}
