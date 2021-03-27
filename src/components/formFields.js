@@ -65,10 +65,9 @@ const CompleteFormFields = {
 			},
 			{
 				title: 'Same As Personal',
-				type: 'radio',
+				type: 'checkbox',
 				onTrueAction: {
-					copyFrom: 'personal.Address',
-					copyTo: 'business.Address'
+					copyFrom: 'personal.Address'
 				}
 			},
 			{
@@ -95,7 +94,7 @@ const CompleteFormFields = {
 		title: 'Debit Card Info',
 		fields: [
 			{
-				title: 'Business Name',
+				title: 'Name to be printed',
 				type: 'text',
 				maxLen: 30,
 				minLen: 2
@@ -109,18 +108,16 @@ const CompleteFormFields = {
 			},
 			{
 				title: 'Same As Personal',
-				type: 'radio',
+				type: 'checkbox',
 				onTrueAction: {
-					copyFrom: 'personal.Address',
-					copyTo: 'card.Address'
+					copyFrom: 'personal.Address'
 				}
 			},
 			{
 				title: 'Same As Bussiness',
-				type: 'radio',
+				type: 'checkbox',
 				onTrueAction: {
-					copyFrom: 'business.Address',
-					copyTo: 'card.Address'
+					copyFrom: 'business.Address'
 				}
 			},
 			{

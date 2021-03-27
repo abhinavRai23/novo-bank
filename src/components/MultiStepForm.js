@@ -1,4 +1,5 @@
 import React from 'react';
+import FinalReviewForm from './FinalReviewForm';
 import FormFields from './formFields';
 import SectionView from './SectionView/index';
 
@@ -11,27 +12,30 @@ const MultiStepForm = React.forwardRef(
 					prefix="personal"
 					completeDate={data}
 					handler={handler}
-					ref={ref}
+					ref={ref.personal}
+					key={currentScreen}
 				/>
 			);
 		if (currentScreen === 2)
 			return (
-				<div>
+				<div key={currentScreen}>
 					<SectionView
 						Fields={FormFields.business}
 						prefix="business"
 						completeDate={data}
 						handler={handler}
+						ref={ref.business}
 					/>
 					<SectionView
 						Fields={FormFields.card}
 						prefix="card"
 						completeDate={data}
 						handler={handler}
+						ref={ref.card}
 					/>
 				</div>
 			);
-		return <div>Final Review</div>;
+		return <FinalReviewForm Fields={FormFields} completeData={data} />;
 	}
 );
 

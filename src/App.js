@@ -9,7 +9,11 @@ class App extends React.Component {
 		currentScreen: 1,
 		data: {}
 	};
-	ref = React.createRef();
+	ref = {
+		personal: React.createRef(),
+		business: React.createRef(),
+		card: React.createRef()
+	};
 
 	handler = (type, sectionData) => {
 		const { data } = this.state;
@@ -24,7 +28,14 @@ class App extends React.Component {
 	navHandler = (type) => {
 		const { currentScreen } = this.state;
 		if (type === 'next') {
-			if (this.ref.current.validateSection()) {
+			if (currentScreen === 1 && this.ref.personal.current.validateSection()) {
+				this.setState({ currentScreen: currentScreen + 1 });
+			}
+			if (
+				currentScreen === 2 &&
+				this.ref.business.current.validateSection() &&
+				this.ref.card.current.validateSection()
+			) {
 				this.setState({ currentScreen: currentScreen + 1 });
 			}
 		} else if (type === 'back') {

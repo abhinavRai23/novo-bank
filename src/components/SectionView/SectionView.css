@@ -23,3 +23,12 @@
 .form-group input {
     width: 450px
 }
+
+.radio-group {
+    margin-left: 138px;
+    margin-bottom: 12px;
+}
+
+.radio-group+.radio-group {
+    margin-left: 0px;
+}
