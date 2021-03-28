@@ -15,6 +15,17 @@ class App extends React.Component {
 		card: React.createRef()
 	};
 
+	componentDidMount() {
+		const appData = localStorage.getItem('appData');
+		if (appData) {
+			const { data, currentScreen } = JSON.parse(appData);
+			this.setState({
+				data,
+				currentScreen
+			});
+		}
+	}
+
 	handler = (type, sectionData) => {
 		const { data } = this.state;
 		this.setState({
@@ -25,23 +36,32 @@ class App extends React.Component {
 		});
 	};
 
+	saveData = () => {
+		const { data, currentScreen } = this.state;
+		localStorage.setItem('appData', JSON.stringify({ data, currentScreen }));
+	};
+
 	navHandler = (type) => {
 		const { currentScreen } = this.state;
+		const updateData = (obj) => {
+			this.setState(obj, () => this.saveData());
+		};
 		if (type === 'next') {
-			if (currentScreen === 1 && this.ref.personal.current.validateSection()) {
-				this.setState({ currentScreen: currentScreen + 1 });
+			if (currentScreen === 1 && this.ref.personal.current.saveInfo()) {
+				updateData({ currentScreen: currentScreen + 1 });
 			}
 			if (
 				currentScreen === 2 &&
-				this.ref.business.current.validateSection() &&
-				this.ref.card.current.validateSection()
+				this.ref.business.current.saveInfo() &&
+				this.ref.card.current.saveInfo()
 			) {
-				this.setState({ currentScreen: currentScreen + 1 });
+				updateData({ currentScreen: currentScreen + 1 });
 			}
 		} else if (type === 'back') {
-			this.setState({ currentScreen: currentScreen - 1 });
+			updateData({ currentScreen: currentScreen - 1 });
 		} else {
-			this.setState({ currentScreen: 1 });
+			localStorage.removeItem('appData');
+			updateData({ currentScreen: 1, data: {} });
 		}
 	};
 

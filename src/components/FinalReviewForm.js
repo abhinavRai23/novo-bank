@@ -17,7 +17,7 @@ function FinalReviewForm({ Fields, completeData }) {
 			{Object.keys(Fields).map((section) => {
 				const { title, fields } = Fields[section];
 				return (
-					<div className="section">
+					<div className="section" key={title.split(' ').join('_')}>
 						<div className="title" style={{ textAlign: 'left' }}>
 							{title}
 						</div>
@@ -39,6 +39,7 @@ function FinalReviewForm({ Fields, completeData }) {
 										<div
 											className="form-group"
 											style={{ justifyContent: 'left' }}
+											key={field.title.split(' ').join('_')}
 										>
 											<div style={{ width: '150px' }}>{field.title}</div>
 											<div style={{ width: '250px' }}>{value}</div>

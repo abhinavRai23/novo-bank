@@ -6,15 +6,39 @@ class SectionView extends React.Component {
 	state = {
 		data: {},
 		addressDisable: false,
-		errorFields: []
+		errorFields: [],
+		showError: false,
+		isDataSynced: false
 	};
 
+	static getDerivedStateFromProps(props, state) {
+		if (
+			!state.isDataSynced &&
+			JSON.stringify(state?.data || {}) !==
+				JSON.stringify(props.completeData?.[props.prefix] || {})
+		) {
+			return {
+				...state,
+				isDataSynced: true,
+				isValid: true,
+				data: props.completeData?.[props.prefix] || {}
+			};
+		}
+		return null;
+	}
+
 	componentDidMount() {
-		const { completeDate = {}, prefix } = this.props;
+		const { completeData = {}, prefix } = this.props;
 		this.setState({
-			data: JSON.parse(JSON.stringify(completeDate[prefix] || {}))
+			data: JSON.parse(JSON.stringify(completeData[prefix] || {}))
 		});
 	}
+
+	saveInfo = () => {
+		const { isValid } = this.state;
+		this.setState({ showError: !isValid });
+		return isValid;
+	};
 
 	validateSection = () => {
 		const { data } = this.state;
@@ -56,9 +80,10 @@ class SectionView extends React.Component {
 			handler(prefix, this.state.data);
 		}
 		this.setState({
-			errorFields
+			isValid,
+			errorFields,
+			showError: false
 		});
-		return isValid;
 	};
 
 	updateValue = ({ target: { name, value } = {} }, field) => {
@@ -71,7 +96,7 @@ class SectionView extends React.Component {
 						[name]: value
 					}
 				},
-				this.validateSection
+				() => this.validateSection
 			);
 		};
 		if (field.type === 'text' && value.length <= field.maxLen) {
@@ -89,13 +114,13 @@ class SectionView extends React.Component {
 	};
 
 	handleRadio = ({ target: { name } = {} }, field) => {
-		const { completeDate = {} } = this.props;
+		const { completeData = {} } = this.props;
 		const { onTrueAction: { copyFrom } = {} } = field;
 		const { data } = this.state;
 		const updateInfo = {};
 		if (!data[name]) {
 			addressArray.forEach((field) => {
-				updateInfo[field] = completeDate?.[copyFrom.split('.')[0]]?.[field];
+				updateInfo[field] = completeData?.[copyFrom.split('.')[0]]?.[field];
 			});
 			updateInfo[name] = name;
 		} else {
@@ -109,12 +134,12 @@ class SectionView extends React.Component {
 				},
 				addressDisable: !data[name]
 			},
-			this.validateSection
+			() => this.validateSection
 		);
 	};
 
 	render() {
-		const { data, addressDisable, errorFields } = this.state;
+		const { data, addressDisable, errorFields, showError } = this.state;
 		const {
 			Fields: { title, fields }
 		} = this.props;
@@ -122,7 +147,7 @@ class SectionView extends React.Component {
 			<div className="section">
 				<div className="title">{title}</div>
 				<div className="form">
-					{!!errorFields.length && (
+					{!!errorFields.length && showError && (
 						<div style={{ color: 'red' }}>
 							Error in: {errorFields.join(', ')}
 						</div>
@@ -158,7 +183,7 @@ class SectionView extends React.Component {
 									type={type}
 									name={name}
 									disabled={addressArray.includes(name) && addressDisable}
-									value={data[name] || ''}
+									value={data?.[name] || ''}
 									onChange={(e) => this.updateValue(e, field)}
 								/>
 							</div>

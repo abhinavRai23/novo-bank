@@ -10,7 +10,7 @@ const MultiStepForm = React.forwardRef(
 				<SectionView
 					Fields={FormFields.personal}
 					prefix="personal"
-					completeDate={data}
+					completeData={data}
 					handler={handler}
 					ref={ref.personal}
 					key={currentScreen}
@@ -22,14 +22,14 @@ const MultiStepForm = React.forwardRef(
 					<SectionView
 						Fields={FormFields.business}
 						prefix="business"
-						completeDate={data}
+						completeData={data}
 						handler={handler}
 						ref={ref.business}
 					/>
 					<SectionView
 						Fields={FormFields.card}
 						prefix="card"
-						completeDate={data}
+						completeData={data}
 						handler={handler}
 						ref={ref.card}
 					/>
