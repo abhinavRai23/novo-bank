@@ -31,6 +31,7 @@ const MultiStepForm = React.forwardRef(
 						prefix="card"
 						completeData={data}
 						handler={handler}
+						businessRef={ref.business}
 						ref={ref.card}
 					/>
 				</div>

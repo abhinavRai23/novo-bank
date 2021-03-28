@@ -11,21 +11,21 @@ class SectionView extends React.Component {
 		isDataSynced: false
 	};
 
-	static getDerivedStateFromProps(props, state) {
-		if (
-			!state.isDataSynced &&
-			JSON.stringify(state?.data || {}) !==
-				JSON.stringify(props.completeData?.[props.prefix] || {})
-		) {
-			return {
-				...state,
-				isDataSynced: true,
-				isValid: true,
-				data: props.completeData?.[props.prefix] || {}
-			};
-		}
-		return null;
-	}
+	// static getDerivedStateFromProps(props, state) {
+	// 	if (
+	// 		!state.isDataSynced &&
+	// 		JSON.stringify(state?.data || {}) !==
+	// 			JSON.stringify(props.completeData?.[props.prefix] || {})
+	// 	) {
+	// 		return {
+	// 			...state,
+	// 			isDataSynced: true,
+	// 			isValid: true,
+	// 			data: props.completeData?.[props.prefix] || {}
+	// 		};
+	// 	}
+	// 	return null;
+	// }
 
 	componentDidMount() {
 		const { completeData = {}, prefix } = this.props;
@@ -33,12 +33,6 @@ class SectionView extends React.Component {
 			data: JSON.parse(JSON.stringify(completeData[prefix] || {}))
 		});
 	}
-
-	saveInfo = () => {
-		const { isValid } = this.state;
-		this.setState({ showError: !isValid });
-		return isValid;
-	};
 
 	validateSection = () => {
 		const { data } = this.state;
@@ -82,8 +76,9 @@ class SectionView extends React.Component {
 		this.setState({
 			isValid,
 			errorFields,
-			showError: false
+			showError: !isValid
 		});
+		return true;
 	};
 
 	updateValue = ({ target: { name, value } = {} }, field) => {
@@ -114,17 +109,29 @@ class SectionView extends React.Component {
 	};
 
 	handleRadio = ({ target: { name } = {} }, field) => {
-		const { completeData = {} } = this.props;
+		const { completeData = {}, prefix, businessRef } = this.props;
 		const { onTrueAction: { copyFrom } = {} } = field;
 		const { data } = this.state;
+		const copyFromSection = copyFrom.split('.')[0];
 		const updateInfo = {};
 		if (!data[name]) {
 			addressArray.forEach((field) => {
-				updateInfo[field] = completeData?.[copyFrom.split('.')[0]]?.[field];
+				if (prefix === 'card' && copyFromSection === 'business') {
+					updateInfo[field] = businessRef.current.state.data[field];
+				} else {
+					updateInfo[field] = completeData?.[copyFromSection]?.[field];
+				}
 			});
 			updateInfo[name] = name;
 		} else {
 			updateInfo[name] = '';
+		}
+		if (prefix === 'card' && copyFromSection === 'business') {
+			if (name === 'Same_As_Bussiness') {
+				updateInfo['Same_As_Personal'] = '';
+			} else if (name === 'Same_As_Personal') {
+				updateInfo['Same_As_Bussiness'] = '';
+			}
 		}
 		this.setState(
 			{

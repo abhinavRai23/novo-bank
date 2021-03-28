@@ -27,13 +27,12 @@ class App extends React.Component {
 	}
 
 	handler = (type, sectionData) => {
-		const { data } = this.state;
-		this.setState({
+		this.setState((state) => ({
 			data: {
-				...data,
+				...state.data,
 				[type]: JSON.parse(JSON.stringify(sectionData || {}))
 			}
-		});
+		}));
 	};
 
 	saveData = () => {
@@ -47,13 +46,13 @@ class App extends React.Component {
 			this.setState(obj, () => this.saveData());
 		};
 		if (type === 'next') {
-			if (currentScreen === 1 && this.ref.personal.current.saveInfo()) {
+			if (currentScreen === 1 && this.ref.personal.current.validateSection()) {
 				updateData({ currentScreen: currentScreen + 1 });
 			}
 			if (
 				currentScreen === 2 &&
-				this.ref.business.current.saveInfo() &&
-				this.ref.card.current.saveInfo()
+				this.ref.business.current.validateSection() &&
+				this.ref.card.current.validateSection()
 			) {
 				updateData({ currentScreen: currentScreen + 1 });
 			}
