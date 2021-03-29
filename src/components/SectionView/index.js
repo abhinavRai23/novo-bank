@@ -11,22 +11,6 @@ class SectionView extends React.Component {
 		isDataSynced: false
 	};
 
-	// static getDerivedStateFromProps(props, state) {
-	// 	if (
-	// 		!state.isDataSynced &&
-	// 		JSON.stringify(state?.data || {}) !==
-	// 			JSON.stringify(props.completeData?.[props.prefix] || {})
-	// 	) {
-	// 		return {
-	// 			...state,
-	// 			isDataSynced: true,
-	// 			isValid: true,
-	// 			data: props.completeData?.[props.prefix] || {}
-	// 		};
-	// 	}
-	// 	return null;
-	// }
-
 	componentDidMount() {
 		const { completeData = {}, prefix } = this.props;
 		this.setState({

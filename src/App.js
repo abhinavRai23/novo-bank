@@ -7,7 +7,8 @@ const totalScreens = 3;
 class App extends React.Component {
 	state = {
 		currentScreen: 1,
-		data: {}
+		data: {},
+		isLoading: true
 	};
 	ref = {
 		personal: React.createRef(),
@@ -21,7 +22,8 @@ class App extends React.Component {
 			const { data, currentScreen } = JSON.parse(appData);
 			this.setState({
 				data,
-				currentScreen
+				currentScreen,
+				isLoading: false
 			});
 		}
 	}
@@ -65,22 +67,28 @@ class App extends React.Component {
 	};
 
 	render() {
-		const { currentScreen, data } = this.state;
+		const { currentScreen, data, isLoading } = this.state;
 		return (
 			<div className="App">
-				<MultiStepForm
-					currentScreen={currentScreen}
-					data={data}
-					handler={this.handler}
-					ref={this.ref}
-				/>
-				<div className="button-group">
-					<NavigationButtons
-						currentScreen={currentScreen}
-						handler={this.navHandler}
-						totalScreens={totalScreens}
-					/>
-				</div>
+				{isLoading ? (
+					<div>Loading...</div>
+				) : (
+					<>
+						<MultiStepForm
+							currentScreen={currentScreen}
+							data={data}
+							handler={this.handler}
+							ref={this.ref}
+						/>
+						<div className="button-group">
+							<NavigationButtons
+								currentScreen={currentScreen}
+								handler={this.navHandler}
+								totalScreens={totalScreens}
+							/>
+						</div>
+					</>
+				)}
 			</div>
 		);
 	}
